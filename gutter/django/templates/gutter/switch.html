@@ -1,27 +1,33 @@
-<div class="switch_form">
-    <form action="{% url 'gutter:update' %}" method="post">
-        {% csrf_token %}
-        {{ switch.as_p }}
+{% load replace from gutter_helpers %}
+{% load greyout from gutter_helpers %}
 
-        <section class="conditions">
-            {{ switch.conditions.management_form }}
+<table>
+<button class='button' data-action='reveal' id='{{switch.name.value|replace:":,-"}}'>></button>
+&nbsp;<span class='switch-name'>{% autoescape off %}{{switch.name.value|greyout}}{% endautoescape %}</span>
+&nbsp;<span class='switch-conditions'>{{switch.conditions|length}} conditions</span>
+</table>
+<form action="{% url 'gutter:update' %}" method="post" id='{{switch.name.value|replace:":,-"}}-form'>
+    {% csrf_token %}
+    {{ switch.as_p }}
 
-            <label for="conditions">Conditions:</label>
-            <ul class="conditions">
-                {% for condition_form in switch.conditions.forms %}
-                <li>
-                    <section class="condition">{{ condition_form }}</section>
-                    <button data-action="remove">Remove</button>
-                </li>
-                {% endfor %}
-            </ul>
+    <section class="conditions">
+        {{ switch.conditions.management_form }}
 
-            <button data-action="add">Add</button>
-        </section>
+        <label for="conditions">Conditions:</label>
+        <ul class="conditions">
+        {% for condition_form in switch.conditions.forms %}
+        <li>
+            <section class="condition">{{ condition_form }}</section>
+            <button data-action="remove">Remove</button>
+        </li>
+        {% endfor %}
+        </ul>
 
-        <section class="actions">
-            <input type="submit" value="Save Switch">
-        </section>
+        <button data-action="add">Add</button>
+    </section>
 
-    </form>
-</div>
+    <section class="actions">
+        <input type="submit" value="Save Switch">
+    </section>
+
+</form>
