@@ -103,11 +103,11 @@ class GutterModule(nexus.NexusModule):
         if form_manager.switch.data.get('delete'):
             print request.POST
             manager.unregister(form_manager.switch.data['name'])
-            return redirect('/gutter/')
+            return redirect('gutter:index')
 
         elif form_manager.is_valid():
             form_manager.save(manager)
-            return redirect('/gutter/')
+            return redirect('gutter:index')
 
         else:
             return self.__render(request, invalid_manager=form_manager)
